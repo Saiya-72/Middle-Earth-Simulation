@@ -1,0 +1,1 @@
+print("Simulation of Middle Earth")

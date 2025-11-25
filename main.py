@@ -1,12 +1,17 @@
 
 import os, sys, time, random, math, io, numpy as np
 
+# Gonna use this a lot to clear the console
+def cls():
+    os.system("cls" if os.name == "nt" else "clear")
+
 class Race():
-    def __init__(self, name, lifespan, reproduction_rate, fighting_ability):
+    def __init__(self, name, lifespan, reproduction_rate, fighting_ability, movement_predisosition):
         self.name = name
         self.lifespan = lifespan  # in years
         self.reproduction_rate = reproduction_rate  # average number of offspring per year in thousands
         self.fighting_ability = fighting_ability  # scale from 1 to 10
+        self.movement_predisposition  # number of units to be moved per time step
 
 class World():
     def __init__(self, races_positions:dict):
@@ -18,10 +23,10 @@ class World():
 
 
 if __name__ == "__main__":
-    elves = Race("Elves", 1500, 0.1, 7)
-    dwarves = Race("Dwarves", 400, 1.0, 8)
-    orcs = Race("Orcs", 40, 3.0, 9)
-    humans = Race("Humans", 80, 10.0, 4)
-    hobbits = Race("Hobbits", 100, 2.0, 2)
+    elves = Race("Elves", 1500, 0.1, 7, 3)
+    dwarves = Race("Dwarves", 400, 1.0, 8, 1)
+    orcs = Race("Orcs", 40, 3.0, 9, 8)
+    humans = Race("Humans", 80, 10.0, 4, 8)
+    hobbits = Race("Hobbits", 100, 2.0, 2, 2)
 
     

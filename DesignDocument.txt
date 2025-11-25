@@ -1,0 +1,67 @@
+**********************************************
+          Middle Earth Simulation
+**********************************************
+
+The Middle Earth Simulation is an ecosystem simulation of Middle Earth from Lord of the Rings 
+by JRR Tolkein. This simulation contains five races as follows:
+    - Humans
+    - Elves
+    - Dwarves
+    - Orcs
+    - Hobbits
+
+Each race has four attributes:
+    - Lifespan (how many years before an entity dies)
+    - Reproduction Rate (how many new units are born each year (in thousands))
+    - Fighting ability (how well the race fights from 1-10)
+    - Movement Predisposition (how likely a certain race is to move each year - how many tiles 
+                               that race will move each time step)
+
+The user can enter however many units of each race the simulation should start with, and then based
+on the attributes of each race, the simulation will run and show what race survives as the final 
+entity after potentially thousands of years pass. 
+
+Whenever two different races end up on the same tile, a battle will ensue and depending on 
+fighting ability, only one of the two races will survive.
+
+Note that on the world map, a letter for a race on the map represents 1000 units of that race. So, 
+if a D is located at (0, 3), then that means there are 1000 dwarves at position (0, 3). This means 
+that reproduction does not require two letter of the same race to be in proximity, each letter 
+has the required resources to reproduce on its own.
+
+The following map represents the map of Middle Earth (not reflective of the one in Tolkein's books)
+
+-------------------------------------------------
+| E |   |   | H |   |   |   | M |   | O |   |   |
+-------------------------------------------------
+|   | D |   |   | M |   | M |   | O |   | M |   |
+-------------------------------------------------
+|   |   |   | O |   |   |   |   |   | D |   |   |
+-------------------------------------------------
+|   | D | E |   | H |   | M | O | M |   | D |   |
+-------------------------------------------------
+|   |   | H |   |   | H |   |   |   |   |   |   |
+-------------------------------------------------
+|   | D |   | M |   |   | H |   |   | E |   |   |
+-------------------------------------------------
+|   |   | O |   |   | M |   | O |   |   |   |   |
+-------------------------------------------------
+Each letter represents approx. 1000 units of each race:
+E = Elves (3000 elves)
+M = Men (8000 humans)
+D = Dwarves (5000 dwarves)
+H = Hobbits (4000 hobbits)
+O = Orcs (6000 orcs)
+
+So, based on the above map, if E in (0, 0) were to reproduce (once every ten years), then another E 
+would appear at a random, unoccupied spot on the map. 
+
+If D in (1, 1) were to move down one and O in (3, 2) were to move two to the left, they would be on
+the same tile, and one of them would defeat the other depending on the fighting abilities of each 
+race.
+
+Data Structures were implemented as follows:
+
+******************************************
+Fill in here as you employ data structures
+******************************************

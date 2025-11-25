@@ -1,0 +1,13 @@
+1. As prompted by the program, enter the number units (in thousands) of each race for the inital 
+state. 
+    1-a) So if you wanted 12000 Dwarves, you would enter 12
+
+2. Press any key to start as prompted
+
+3. Observe as the years pass 
+    3-a) Each normal year will be displayed for one second
+    3-b) Each year on which something major happens will be displayed for three seconds
+    3-c) The Graph of Middle Earth will show locations of each race throughout the world
+    3-d) The bar graph will display the relative population levels of each race
+
+4. Press enter on any year to exit the simulation and look at final statistics. 

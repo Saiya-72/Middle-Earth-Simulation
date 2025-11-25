@@ -1,4 +1,6 @@
 USAGE INSTRUCTIONS
+
+---------------------------------
 Middle Earth Ecosystem Simulation
 ---------------------------------
 

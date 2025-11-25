@@ -1,3 +1,6 @@
+
+import os, sys, time, random, math, io, numpy as np
+
 class Race():
     def __init__(self, name, lifespan, reproduction_rate, fighting_ability):
         self.name = name

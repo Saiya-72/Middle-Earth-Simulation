@@ -1,13 +1,70 @@
-1. As prompted by the program, enter the number units (in thousands) of each race for the inital 
-state. 
-    1-a) So if you wanted 12000 Dwarves, you would enter 12
+USAGE INSTRUCTIONS
+Middle Earth Ecosystem Simulation
+---------------------------------
 
-2. Press any key to start as prompted
+Overview
+This program simulates a simplified ecosystem of Middle Earth on a 7x12 grid.
+Each letter on the map represents approximately 1,000 individuals of a race:
 
-3. Observe as the years pass 
-    3-a) Each normal year will be displayed for one second
-    3-b) Each year on which something major happens will be displayed for three seconds
-    3-c) The Graph of Middle Earth will show locations of each race throughout the world
-    3-d) The bar graph will display the relative population levels of each race
+E = Elves
+M = Men (Humans)
+D = Dwarves
+H = Hobbits
+O = Orcs
 
-4. Press enter on any year to exit the simulation and look at final statistics. 
+Every simulated year, the program:
+- Moves each entity
+- Resolves battles when multiple races share a tile
+- Performs reproduction
+- Removes entities that die of old age
+- Prints the updated Middle Earth map
+- Prints population counts and yearly events
+
+At the end of the simulation, the program prints a vertical population graph (0–10 scale).
+
+Requirements
+- Python 3.8 or newer
+- NumPy installed (pip install numpy)
+- main.py in the same folder
+
+How to Run
+1. Open a terminal in the project folder.
+2. Run: python main.py
+
+Program Inputs
+
+1. Initial Population Setup
+   You will enter the number of units (each unit = 1000 individuals) for each race.
+   Example:
+   Men: 8
+   Dwarves: 5
+   Elves: 3
+   Orcs: 6
+   Hobbits: 4
+
+   Entities are placed randomly into empty cells on the 7x12 Middle Earth map.
+
+2. Number of Years to Simulate
+   Example:
+   Enter maximum number of years to simulate: 30
+
+Simulation Output (Each Year)
+- The current year is displayed.
+- The 7x12 Middle Earth map is printed.
+- Population counts for each race are displayed.
+- Yearly events (battles, reproduction, deaths) are listed.
+
+User Control
+After each year:
+Press Enter to continue to the next year.
+Type 'q' and press Enter to stop early.
+
+Stopping Conditions
+- User stops the simulation by typing 'q'
+- Maximum number of years is reached
+- All races go extinct automatically
+
+Final Summary
+At the end of the simulation, the program prints:
+- Final populations for each race (sorted alphabetically)
+- A vertical bar graph (0–10 scale) showing the relative populations

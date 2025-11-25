@@ -60,8 +60,125 @@ If D in (1, 1) were to move down one and O in (3, 2) were to move two to the lef
 the same tile, and one of them would defeat the other depending on the fighting abilities of each 
 race.
 
-Data Structures were implemented as follows:
+----------------------------------------
+            Data Structures 
+----------------------------------------
 
-******************************************
-Fill in here as you employ data structures
-******************************************
+The Middle Earth Simulation is designed as a data-structures-focused
+ecosystem. All required structures are implemented from scratch and
+used in core parts of the simulation, not just as decorations.
+
+1. Linked List (singly linked)
+   - Implementation: classes `LinkedList` and `LinkedListNode`.
+   - Usage:
+       * The global collection of all entities (each letter on the map)
+         is stored in a `LinkedList`.
+       * Every year, the simulation iterates over this list to age,
+         move, fight, and reproduce entities.
+       * Dead entities are removed from the list using the `remove_if`
+         method.
+   - Rationale:
+       * Efficient insertion and removal while iterating over entities.
+       * Simple structure that keeps entity storage independent of the
+         2D board representation.
+
+2. Stack
+   - Implementation: class `Stack`, a simple wrapper around a Python list
+     with `push` and `pop` methods.
+   - Usage:
+       * Every in-simulation year, important events are pushed onto a
+         `Stack`:
+             - Deaths (old age or battle losses).
+             - Reproduction events.
+             - Battle victories.
+       * After the year’s actions are complete, the stack is popped to
+         print the events in last-in, first-out order.
+   - Rationale:
+       * Demonstrates LIFO behavior.
+       * Provides a clean way to accumulate and then print the “event log”
+         for each year.
+
+3. Queue
+   - Implementation: class `Queue` using a circular buffer (head, tail,
+     and explicit size).
+   - Usage:
+       * At the start of each year, all living entities are aged and then
+         enqueued into a `Queue`.
+       * The queue is then drained into a priority queue: entities are
+         dequeued in FIFO order and inserted into the priority queue with
+         a priority based on movement predisposition.
+   - Rationale:
+       * Demonstrates a real FIFO queue, separate from built-in types.
+       * Used every single year as part of the scheduling pipeline.
+
+4. Heap and Priority Queue
+   - Implementation:
+       * `MinHeap` stores `HeapItem` objects (priority + value) in an
+         array-based binary heap with `_sift_up` and `_sift_down`.
+       * `PriorityQueue` is a thin wrapper that exposes `push` and `pop`.
+   - Usage:
+       * After entities are enqueued through the `Queue`, they are
+         inserted into the `PriorityQueue` with a priority based on:
+             - Movement predisposition (faster races tend to move earlier).
+             - A small random jitter to avoid deterministic ties.
+       * Entities are then popped from the priority queue to move in
+         increasing priority order.
+   - Rationale:
+       * Provides an “advanced” structure for scheduling actions.
+       * The order in which entities move is integral to how collisions
+         and battles play out.
+
+5. Tree (Binary Search Tree)
+   - Implementation: classes `BinarySearchTree` and `BSTNode`.
+   - Usage:
+       * At the end of the simulation, the final population count for each
+         race is inserted into a binary search tree keyed by race name.
+       * An in-order traversal of the BST prints the final populations
+         in sorted order (Elves, Dwarves, Hobbits, Men, Orcs, etc.).
+   - Rationale:
+       * Demonstrates a well-defined tree structure.
+       * Provides sorted output without relying on library sorting.
+
+6. NumPy Array
+   - Implementation:
+       * A 2D NumPy array `pop_history` of size (number of races) ×
+         (number of years + 1) stores population counts for each race at
+         each simulated year.
+       * A 1D NumPy array `repro_acc` stores fractional reproduction
+         accumulators for each race.
+   - Usage:
+       * After each year, the current number of letters for each race is
+         written into `pop_history[race_index, year]`.
+       * The `repro_acc` array accumulates expected births based on the
+         reproduction rate:
+             - Example: Elves have `reproduction_rate = 0.1`, so each E
+               adds 0.1 to the Elven accumulator per year. When the
+               accumulator reaches ≥ 1, a new E is spawned on a random
+               empty tile.
+             - Men have `reproduction_rate = 10.0`, so each M causes many
+               new Men to appear each year, subject to available empty
+               tiles.
+       * At the end, the final population counts (from the last column of
+         `pop_history`) are used to scale the vertical bar chart from 0
+         to 10.
+   - Rationale:
+       * Demonstrates NumPy handling numeric/tabular data.
+       * Cleanly separates “world state” (the 2D map) from the time-series
+         statistics used for analysis and graphing.
+
+7. World Grid Representation
+   - The actual map of Middle Earth is a 7×12 grid of cells.
+   - Internally, it is represented as a 2D Python list
+     `board[row][col]` that either stores a reference to an `Entity`
+     or `None` if the tile is empty.
+   - Each year:
+       * A temporary 2D list of lists is built to detect battles when
+         more than one entity moves into the same tile.
+       * After battles are resolved, the board is rebuilt so that at most
+         one entity occupies each tile, matching the single-letter view in
+         the design document.
+
+Together, these structures support the full simulation:
+entities are stored in a linked list, scheduled each year through a
+queue and priority queue backed by a heap, logged with a stack, and
+summarized at the end using a binary search tree and NumPy arrays.

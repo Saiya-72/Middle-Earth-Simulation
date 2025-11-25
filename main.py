@@ -63,7 +63,7 @@ class LinkedList:
 
 
 class Stack:
-    """Simple LIFO stack used for logging events each year."""
+    """Simple LIFO stack used for logging events each decade."""
     def __init__(self) -> None:
         self._data: List[Any] = []
 
@@ -175,7 +175,7 @@ class MinHeap:
 
 
 class PriorityQueue:
-    """Thin wrapper around MinHeap used to schedule entity actions each year."""
+    """Thin wrapper around MinHeap used to schedule entity actions each decade."""
     def __init__(self) -> None:
         self._heap = MinHeap()
 
@@ -245,9 +245,9 @@ class Race:
         movement_predisposition: int,
     ):
         """
-        reproduction_rate: expected number of new letters per existing letter per year.
-            Example: Elves 0.1 => each E letter spawns a new E every 10 years on average.
-        movement_predisposition: number of grid steps a letter attempts to move per year.
+        reproduction_rate: expected number of new letters per existing letter per decade.
+            Example: Elves 0.1 => each E letter spawns a new E every 10 decades on average.
+        movement_predisposition: number of grid steps a letter attempts to move per decade.
         """
         self.index = index
         self.name = name
@@ -331,14 +331,14 @@ def random_initial_placement(entities: LinkedList, races: List[Race], initial_co
     return board
 
 
-def move_entities_for_year(
-    year: int,
+def move_entities_for_decade(
+    decade: int,
     entities: LinkedList,
     races: List[Race],
     events: Stack,
 ) -> List[List[List[Entity]]]:
     """
-    Move all alive entities for one year:
+    Move all alive entities for one decade:
       - Age increments.
       - Old entities die.
       - Movement order determined by priority queue.
@@ -349,10 +349,10 @@ def move_entities_for_year(
     for entity in entities:
         if not entity.alive:
             continue
-        entity.age += 1
+        entity.age += 10
         if entity.age > entity.race.lifespan:
             entity.alive = False
-            events.push(f"Year {year}: {entity.race.name} #{entity.id} died of old age at ({entity.col}, {entity.row}).")
+            events.push(f"Decade {decade}: {entity.race.name} #{entity.id} died of old age at ({entity.col}, {entity.row}).")
         else:
             q.enqueue(entity)
 
@@ -387,7 +387,7 @@ def move_entities_for_year(
     return cell_lists
 
 
-def resolve_battles(year: int, cell_lists: List[List[List[Entity]]], events: Stack) -> None:
+def resolve_battles(decade: int, cell_lists: List[List[List[Entity]]], events: Stack) -> None:
     """If multiple races occupy the same tile, only the strongest race survives."""
     for r in range(ROWS):
         for c in range(COLS):
@@ -403,7 +403,7 @@ def resolve_battles(year: int, cell_lists: List[List[List[Entity]]], events: Sta
                     continue
                 e.alive = False
                 events.push(
-                    f"Year {year}: {winner.race.name} #{winner.id} defeated {e.race.name} #{e.id} at ({c}, {r})."
+                    f"decade {decade}: {winner.race.name} #{winner.id} defeated {e.race.name} #{e.id} at ({c}, {r})."
                 )
             # After battle, only winner remains in this cell
             cell_lists[r][c] = [winner]
@@ -424,7 +424,7 @@ def rebuild_entities_and_grid(
 
 
 def reproduction_step(
-    year: int,
+    decade: int,
     entities: LinkedList,
     races: List[Race],
     board: List[List[Optional[Entity]]],
@@ -462,7 +462,7 @@ def reproduction_step(
             entities.append(child)
             board[r][c] = child
             events.push(
-                f"Year {year}: {race.name} reproduced -> new {race.name} #{child.id} at ({c}, {r})."
+                f"decade {decade}: {race.name} reproduced -> new {race.name} #{child.id} at ({c}, {r})."
             )
 
 
@@ -480,7 +480,7 @@ def compute_population_counts(entities: LinkedList, races: List[Race]) -> List[i
 # -----------------------------
 
 def print_board(board: List[List[Optional[Entity]]]) -> None:
-    """Print the 7×12 Middle Earth map using the given board layout."""
+    """Print the ROWxCOL Middle Earth map using the given board layout."""
     border = "-" * (4 * COLS + 1)
     for row in range(ROWS - 1, -1, -1):
         print(border)
@@ -537,7 +537,7 @@ def print_population_bar_chart(counts: List[int], races: List[Race]) -> None:
     print()
 
 
-def final_summary(year: int, entities: LinkedList, races: List[Race]) -> None:
+def final_summary(decade: int, entities: LinkedList, races: List[Race]) -> None:
     print("\n===== FINAL SUMMARY =====\n")
     counts = compute_population_counts(entities, races)
 
@@ -569,8 +569,8 @@ def run_simulation() -> None:
 
     while True:
         try:
-            max_years = int(input("\nEnter maximum number of years to simulate: "))
-            if max_years <= 0:
+            max_decades = int(input("\nEnter maximum number of decades to simulate: "))
+            if max_decades <= 0:
                 raise ValueError()
             break
         except ValueError:
@@ -579,46 +579,46 @@ def run_simulation() -> None:
     entities = LinkedList()
     board = random_initial_placement(entities, races, initial_counts)
 
-    # NumPy array to record populations (rows=races, columns=years)
-    pop_history = np.zeros((len(races), max_years + 1), dtype=int)
+    # NumPy array to record populations (rows=races, columns=decades)
+    pop_history = np.zeros((len(races), max_decades + 1), dtype=int)
     repro_acc = np.zeros(len(races), dtype=float)
 
-    # Initial population record (year 0)
+    # Initial population record (decade 0)
     counts0 = compute_population_counts(entities, races)
     for i, c in enumerate(counts0):
         pop_history[i, 0] = c
 
-    year = 0
-    while year < max_years:
-        year += 1
+    decade = 0
+    while decade < max_decades:
+        decade += 1
         cls()
-        print(f"Year {year}")
+        print(f"decade {decade}")
         print_board(board)
 
         events = Stack()
         # Movement & aging
-        cell_lists = move_entities_for_year(year, entities, races, events)
+        cell_lists = move_entities_for_decade(decade, entities, races, events)
         # Battles
-        resolve_battles(year, cell_lists, events)
+        resolve_battles(decade, cell_lists, events)
         # Rebuild clean single-entity board
         board = rebuild_entities_and_grid(entities)
         # Reproduction
-        reproduction_step(year, entities, races, board, repro_acc, events)
+        reproduction_step(decade, entities, races, board, repro_acc, events)
 
         # Record populations
         counts = compute_population_counts(entities, races)
         for i, c in enumerate(counts):
-            pop_history[i, year] = c
+            pop_history[i, decade] = c
 
-        # Display simple per-year statistics
+        # Display simple per-decade statistics
         print("\nPopulation counts:")
         for race, c in zip(races, counts):
             print(f"  {race.name:8}: {c:3d} letters")
 
         if events.is_empty():
-            print("\nNo major events this year.")
+            print("\nNo major events this decade.")
         else:
-            print("\nEvents this year (most recent first):")
+            print("\nEvents this decade (most recent first):")
             while not events.is_empty():
                 print("  -", events.pop())
 
@@ -628,11 +628,11 @@ def run_simulation() -> None:
             break
 
         # Allow user to stop early
-        choice = input("\nPress Enter to advance to next year, or type 'q' then Enter to stop: ").strip().lower()
+        choice = input("\nPress Enter to advance to next decade, or type 'q' then Enter to stop: ").strip().lower()
         if choice == "q":
             break
 
-    final_summary(year, entities, races)
+    final_summary(decade, entities, races)
 
 
 if __name__ == "__main__":

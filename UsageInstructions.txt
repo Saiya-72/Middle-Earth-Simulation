@@ -43,7 +43,7 @@ Program Inputs
 
 2. Number of Decades to Simulate
    Example:
-   Enter maximum number of Decadess to simulate: 30
+   Enter maximum number of Decades to simulate: 30
 
 Simulation Output (Each Decade)
 - The current decade is displayed.

@@ -1,11 +1,11 @@
-USAGE INSTRUCTIONS
+**********************************************
+          Middle Earth Simulation
+**********************************************
 
----------------------------------
-Middle Earth Ecosystem Simulation
----------------------------------
+-- USAGE INSTRUCTIONS --
 
 Overview
-This program simulates a simplified ecosystem of Middle Earth on a 7x12 grid.
+This program simulates a simplified ecosystem of Middle Earth on a 7x20 grid.
 Each letter on the map represents approximately 1,000 individuals of a race:
 
 E = Elves
@@ -24,11 +24,6 @@ Every simulated year, the program:
 
 At the end of the simulation, the program prints a vertical population graph (0–10 scale).
 
-Requirements
-- Python 3.8 or newer
-- NumPy installed (pip install numpy)
-- main.py in the same folder
-
 How to Run
 1. Open a terminal in the project folder.
 2. Run: python main.py
@@ -44,15 +39,15 @@ Program Inputs
    Orcs: 6
    Hobbits: 4
 
-   Entities are placed randomly into empty cells on the 7x12 Middle Earth map.
+   Entities are placed randomly into empty cells on the 7x20 Middle Earth map.
 
-2. Number of Years to Simulate
+2. Number of Decades to Simulate
    Example:
-   Enter maximum number of years to simulate: 30
+   Enter maximum number of Decadess to simulate: 30
 
 Simulation Output (Each Year)
 - The current year is displayed.
-- The 7x12 Middle Earth map is printed.
+- The 7x20 Middle Earth map is printed.
 - Population counts for each race are displayed.
 - Yearly events (battles, reproduction, deaths) are listed.
 

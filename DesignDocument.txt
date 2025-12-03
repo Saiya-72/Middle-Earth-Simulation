@@ -160,16 +160,15 @@ used in core parts of the simulation, not just as decorations.
              - Men have `reproduction_rate = 10.0`, so each M causes many
                new Men to appear each decade, subject to available empty
                tiles.
-       * At the end, the final population counts (from the last column of
-         `pop_history`) are used to scale the vertical bar chart from 0
-         to 10.
+       * At the end, the current population counts are used to scale the vertical 
+       bar chart from 0 to 10.
    - Rationale:
        * Demonstrates NumPy handling numeric/tabular data.
        * Cleanly separates “world state” (the 2D map) from the time-series
          statistics used for analysis and graphing.
 
 7. World Grid Representation
-   - The actual map of Middle Earth is a 7×12 grid of cells.
+   - The actual map of Middle Earth is a 7×20 grid of cells.
    - Internally, it is represented as a 2D Python list
      `board[row][col]` that either stores a reference to an `Entity`
      or `None` if the tile is empty.

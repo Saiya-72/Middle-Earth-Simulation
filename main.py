@@ -5,7 +5,7 @@ from typing import Any, Optional, List
 import numpy as np
 
 ROWS = 7   # map height
-COLS = 12  # map width
+COLS = 20  # map width
 
 # -----------------------------
 # Utility
@@ -278,9 +278,9 @@ class Entity:
 def create_races() -> List[Race]:
     races: List[Race] = []
     # Index order matches the final population bar chart: Men, Dwarves, Elves, Orcs, Hobbits
-    races.append(Race(0, "Men",     "M", lifespan=80,   reproduction_rate=8.0, fighting_ability=2, movement_predisposition=8))
-    races.append(Race(1, "Dwarves", "D", lifespan=400,  reproduction_rate=1.0,  fighting_ability=4, movement_predisposition=1))
-    races.append(Race(2, "Elves",   "E", lifespan=1500, reproduction_rate=0.1, fighting_ability=5, movement_predisposition=3))
+    races.append(Race(0, "Men",     "M", lifespan=80,   reproduction_rate=6.0, fighting_ability=2, movement_predisposition=8))
+    races.append(Race(1, "Dwarves", "D", lifespan=400,  reproduction_rate=2.0,  fighting_ability=4, movement_predisposition=1))
+    races.append(Race(2, "Elves",   "E", lifespan=1500, reproduction_rate=0.2, fighting_ability=5, movement_predisposition=3))
     races.append(Race(3, "Orcs",    "O", lifespan=40,   reproduction_rate=12.0, fighting_ability=3, movement_predisposition=8))
     races.append(Race(4, "Hobbits", "H", lifespan=100,  reproduction_rate=2.0, fighting_ability=1, movement_predisposition=2))
     return races
@@ -289,6 +289,7 @@ def create_races() -> List[Race]:
 def ask_initial_units(races: List[Race]) -> List[int]:
     print("Enter the initial number of units (in thousands) for each race.")
     print("For example, entering 12 for Dwarves means 12,000 dwarves, represented by 12 letters on the map.\n")
+    print("Try not to exceed the total map capacity of", ROWS * COLS, "letters ;)\n")
     counts: List[int] = []
     for race in races:
         while True:
@@ -592,8 +593,6 @@ def run_simulation() -> None:
     while decade < max_decades:
         decade += 1
         cls()
-        print(f"decade {decade}")
-        print_board(board)
 
         events = Stack()
         # Movement & aging
@@ -610,11 +609,6 @@ def run_simulation() -> None:
         for i, c in enumerate(counts):
             pop_history[i, decade] = c
 
-        # Display simple per-decade statistics
-        print("\nPopulation counts:")
-        for race, c in zip(races, counts):
-            print(f"  {race.name:8}: {c:3d} letters")
-
         if events.is_empty():
             print("\nNo major events this decade.")
         else:
@@ -626,6 +620,15 @@ def run_simulation() -> None:
         if sum(counts) == 0:
             print("\nAll races are extinct. Ending simulation.")
             break
+
+        # Display simple per-decade statistics
+        print("\nPopulation counts:")
+        for race, c in zip(races, counts):
+            print(f"  {race.name:8}: {c:3d} letters")
+
+        # Display board
+        print(f"\n\nYear {decade*10} Map:")
+        print_board(board)
 
         # Allow user to stop early
         choice = input("\nPress Enter to advance to next decade, or type 'q' then Enter to stop: ").strip().lower()

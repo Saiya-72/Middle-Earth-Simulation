@@ -14,9 +14,9 @@ by JRR Tolkein. This simulation contains five races as follows:
 
 Each race has four attributes:
     - Lifespan (how many years before an entity dies)
-    - Reproduction Rate (how many new units are born each year (in thousands))
+    - Reproduction Rate (how many new units are born each decade (in thousands))
     - Fighting ability (how well the race fights from 1-10)
-    - Movement Predisposition (how likely a certain race is to move each year - how many tiles 
+    - Movement Predisposition (how likely a certain race is to move each decade - how many tiles 
                                that race will move each time step)
 
 The user can enter however many units of each race the simulation should start with, and then based
@@ -75,7 +75,7 @@ used in core parts of the simulation, not just as decorations.
    - Usage:
        * The global collection of all entities (each letter on the map)
          is stored in a `LinkedList`.
-       * Every year, the simulation iterates over this list to age,
+       * Every decade, the simulation iterates over this list to age,
          move, fight, and reproduce entities.
        * Dead entities are removed from the list using the `remove_if`
          method.
@@ -88,30 +88,30 @@ used in core parts of the simulation, not just as decorations.
    - Implementation: class `Stack`, a simple wrapper around a Python list
      with `push` and `pop` methods.
    - Usage:
-       * Every in-simulation year, important events are pushed onto a
+       * Every in-simulation decade, important events are pushed onto a
          `Stack`:
              - Deaths (old age or battle losses).
              - Reproduction events.
              - Battle victories.
-       * After the year’s actions are complete, the stack is popped to
+       * After the decade’s actions are complete, the stack is popped to
          print the events in last-in, first-out order.
    - Rationale:
        * Demonstrates LIFO behavior.
        * Provides a clean way to accumulate and then print the “event log”
-         for each year.
+         for each decade.
 
 3. Queue
    - Implementation: class `Queue` using a circular buffer (head, tail,
      and explicit size).
    - Usage:
-       * At the start of each year, all living entities are aged and then
+       * At the start of each decade, all living entities are aged and then
          enqueued into a `Queue`.
        * The queue is then drained into a priority queue: entities are
          dequeued in FIFO order and inserted into the priority queue with
          a priority based on movement predisposition.
    - Rationale:
        * Demonstrates a real FIFO queue, separate from built-in types.
-       * Used every single year as part of the scheduling pipeline.
+       * Used every single decade as part of the scheduling pipeline.
 
 4. Heap and Priority Queue
    - Implementation:
@@ -144,21 +144,21 @@ used in core parts of the simulation, not just as decorations.
 6. NumPy Array
    - Implementation:
        * A 2D NumPy array `pop_history` of size (number of races) ×
-         (number of years + 1) stores population counts for each race at
-         each simulated year.
+         (number of decades + 1) stores population counts for each race at
+         each simulated decade.
        * A 1D NumPy array `repro_acc` stores fractional reproduction
          accumulators for each race.
    - Usage:
-       * After each year, the current number of letters for each race is
-         written into `pop_history[race_index, year]`.
+       * After each decade, the current number of letters for each race is
+         written into `pop_history[race_index, decade]`.
        * The `repro_acc` array accumulates expected births based on the
          reproduction rate:
              - Example: Elves have `reproduction_rate = 0.1`, so each E
-               adds 0.1 to the Elven accumulator per year. When the
+               adds 0.1 to the Elven accumulator per decade. When the
                accumulator reaches ≥ 1, a new E is spawned on a random
                empty tile.
              - Men have `reproduction_rate = 10.0`, so each M causes many
-               new Men to appear each year, subject to available empty
+               new Men to appear each decade, subject to available empty
                tiles.
        * At the end, the final population counts (from the last column of
          `pop_history`) are used to scale the vertical bar chart from 0
@@ -173,7 +173,7 @@ used in core parts of the simulation, not just as decorations.
    - Internally, it is represented as a 2D Python list
      `board[row][col]` that either stores a reference to an `Entity`
      or `None` if the tile is empty.
-   - Each year:
+   - Each decade:
        * A temporary 2D list of lists is built to detect battles when
          more than one entity moves into the same tile.
        * After battles are resolved, the board is rebuilt so that at most
@@ -181,6 +181,6 @@ used in core parts of the simulation, not just as decorations.
          the design document.
 
 Together, these structures support the full simulation:
-entities are stored in a linked list, scheduled each year through a
+entities are stored in a linked list, scheduled each decade through a
 queue and priority queue backed by a heap, logged with a stack, and
 summarized at the end using a binary search tree and NumPy arrays.

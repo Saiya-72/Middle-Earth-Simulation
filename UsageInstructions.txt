@@ -14,13 +14,13 @@ D = Dwarves
 H = Hobbits
 O = Orcs
 
-Every simulated year, the program:
+Every simulated decade, the program:
 - Moves each entity
 - Resolves battles when multiple races share a tile
 - Performs reproduction
 - Removes entities that die of old age
 - Prints the updated Middle Earth map
-- Prints population counts and yearly events
+- Prints population counts and events each decade
 
 At the end of the simulation, the program prints a vertical population graph (0–10 scale).
 
@@ -45,20 +45,20 @@ Program Inputs
    Example:
    Enter maximum number of Decadess to simulate: 30
 
-Simulation Output (Each Year)
-- The current year is displayed.
+Simulation Output (Each Decade)
+- The current decade is displayed.
 - The 7x20 Middle Earth map is printed.
 - Population counts for each race are displayed.
-- Yearly events (battles, reproduction, deaths) are listed.
+- Events each decade (battles, reproduction, deaths) are listed.
 
 User Control
-After each year:
-Press Enter to continue to the next year.
+After each decade:
+Press Enter to continue to the next decade.
 Type 'q' and press Enter to stop early.
 
 Stopping Conditions
 - User stops the simulation by typing 'q'
-- Maximum number of years is reached
+- Maximum number of decades is reached
 - All races go extinct automatically
 
 Final Summary
